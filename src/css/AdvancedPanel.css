@@ -1,0 +1,20 @@
+#advancedPanel {
+  position: absolute;
+  top: 191.5px;
+  z-index: -1;
+  width: 20%;
+  transition: 0.5s;
+  padding: 10px;
+  background: lightgreen;
+  text-align: center;
+}
+
+#advancedPanel h2 {
+  margin-top: 0;
+}
+
+#advancedButtonGrid {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 25% 25% 25% 25%;
+}

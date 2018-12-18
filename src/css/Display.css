@@ -1,0 +1,9 @@
+#displayBox {
+  background: lightblue;
+  margin: 0 auto 20px auto;
+}
+
+#display {
+  background: white;
+  padding: 10px;
+}
