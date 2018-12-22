@@ -1,9 +1,11 @@
 import React, {Component} from "react";
+import * as math from "mathjs";
 
 import AdvancedPanel from "./components/AdvancedPanel";
 import Button from "./components/Button";
 import AdvancedButton from "./components/AdvancedButton";
 import Display from "./components/Display";
+import Footer from "./components/Footer";
 
 import {basicButtons} from "./assets/buttonBank";
 
@@ -24,6 +26,7 @@ export default class App extends Component {
     });
   };
   resolveButtonPress = (buttonText) => {
+    const calcText = this.state.calcText;
     switch (buttonText) {
       case "C":
         this.setState({
@@ -31,11 +34,23 @@ export default class App extends Component {
         });
         break;
 
+      case "=":
+        this.setState({calcText: this.evaluate(calcText)});
+        break;
+
+      case "+/-":
+        const lastNum = calcText.substr;
+        this.setState({calcText: `${-1 * calcText}`});
+        break;
+
       default:
         this.setState({
-          calcText: this.state.calcText + buttonText
+          calcText: calcText + buttonText
         });
     }
+  };
+  evaluate = (expression) => {
+    return `${math.eval(expression)}`;
   };
   render() {
     const buttons = basicButtons.map((btn) => {
@@ -61,6 +76,7 @@ export default class App extends Component {
           <Display calcText={this.state.calcText} />
           <div id="buttonGrid">{buttons}</div>
         </div>
+        <Footer />
       </div>
     );
   }
