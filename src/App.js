@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import * as math from "mathjs";
 
 import AdvancedPanel from "./components/AdvancedPanel";
-// import Button from "./components/Button";
-// import AdvancedButton from "./components/AdvancedButton";
+import Button from "./components/Button";
 import Display from "./components/Display";
 import Footer from "./components/Footer";
 
@@ -97,9 +96,12 @@ export default class App extends Component {
   render() {
     const buttons = basicButtons.map((btn) => {
       return (
-        <button key={btn.desc} id={btn.desc} onClick={this.resolveButtonPress}>
-          {btn.text}
-        </button>
+        <Button
+          key={btn.desc}
+          description={btn.desc}
+          text={btn.text}
+          resolveButtonPress={this.resolveButtonPress}
+        />
       );
     });
     return (
