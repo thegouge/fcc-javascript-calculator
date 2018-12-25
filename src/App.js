@@ -7,6 +7,7 @@ import Display from "./components/Display";
 import Footer from "./components/Footer";
 
 import {basicButtons} from "./assets/buttonBank";
+import regexLastIndexOf from "./assets/regexLastIndexOf";
 
 import "./css/App.css";
 
@@ -17,12 +18,6 @@ export default class App extends Component {
 
     this.resolveButtonPress = this.resolveButtonPress.bind(this);
   }
-
-  toggleAdvPanel = () => {
-    this.setState({
-      advanced: !this.state.advanced
-    });
-  };
 
   resolveButtonPress(buttonText) {
     let calcText = this.state.calcText;
@@ -46,7 +41,7 @@ export default class App extends Component {
         break;
 
       case "+/-":
-        calcText = `${-1 * calcText}`;
+        calcText = `${this.changeLastNumberSign(calcText)}`;
         break;
 
       case "x":
@@ -57,9 +52,7 @@ export default class App extends Component {
         calcText += `${buttonText}`;
     }
     calcText = this.cleanText(calcText);
-    this.setState({
-      calcText: calcText
-    });
+    this.setState({calcText: calcText});
   }
 
   evaluate = (expression) => {
@@ -74,9 +67,16 @@ export default class App extends Component {
     }
   };
 
+  toggleAdvPanel = () => {
+    this.setState({
+      advanced: !this.state.advanced
+    });
+  };
+
   cleanText = (text) => {
     let cleanText = text.replace(/0{2,}/, "");
     cleanText = cleanText.replace(/0(?=\d)/, "");
+    cleanText = cleanText.replace(/(?<=\.)\.|(?<=\.\d+)\./, "");
     const regex = /[+\-*]{2,}/;
     if (regex.test(cleanText)) {
       let multiOperation = cleanText.match(regex)[0];
@@ -86,12 +86,13 @@ export default class App extends Component {
     return cleanText !== "" ? cleanText : "0";
   };
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextState !== this.state) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  changeLastNumberSign = (text) => {
+    const lastOperandIndex = regexLastIndexOf(text, /[+\-*/]/) + 1;
+    const lastNumber = parseInt(text.substring(lastOperandIndex));
+
+    console.log(lastOperandIndex);
+    return `${text.slice(0, lastOperandIndex)}(${lastNumber * -1})`;
+  };
 
   render() {
     const buttons = basicButtons.map((btn) => {
@@ -108,7 +109,7 @@ export default class App extends Component {
       <div className="App">
         <AdvancedPanel
           display={this.state.advanced}
-          resolvePress={this.resolveButtonPress}
+          resolveButtonPress={this.resolveButtonPress}
         />
         <div id="calculator">
           <Display calcText={this.state.calcText} />

@@ -30,7 +30,7 @@ export const advancedButtons = [
       <span>
         X<sup>y</sup>
       </span>
-    ),
+    ).props.children,
     desc: "exponent"
   },
   {text: <span>&pi;</span>, desc: "pi"},
@@ -45,7 +45,7 @@ export const advancedButtons = [
       <span>
         <sup>=</sup>h
       </span>
-    ),
+    ).props.children,
     desc: "convertToHours"
   },
   {
@@ -53,7 +53,7 @@ export const advancedButtons = [
       <span>
         <sup>=</sup>m
       </span>
-    ),
+    ).props.children,
     desc: "convertToMinutes"
   },
   {
@@ -61,7 +61,7 @@ export const advancedButtons = [
       <span>
         <sup>=</sup>s
       </span>
-    ),
+    ).props.children,
     desc: "convertToSeconds"
   }
 ];

@@ -14,7 +14,7 @@ export default class AdvancedPanel extends Component {
           key={btn.desc}
           description={btn.desc}
           text={btn.text}
-          update={this.props.update}
+          resolveButtonPress={this.props.resolveButtonPress}
         />
       );
     });
