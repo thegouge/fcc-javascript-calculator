@@ -8,6 +8,7 @@ import "../css/AdvancedPanel.css";
 
 export default class AdvancedPanel extends Component {
   render() {
+    const parentWidth = parseInt(this.props.calcWidth)
     const buttonElements = advancedButtons.map((btn) => {
       return (
         <Button
@@ -21,7 +22,7 @@ export default class AdvancedPanel extends Component {
     return (
       <div
         id="advancedPanel"
-        style={this.props.display ? {left: 919} : {left: 624}}
+        style={this.props.display ? {left: 919} : {left: parentWidth + parentWidth*0.25}}
       >
         <div id="panelHeader">
           <h2>Advanced Buttons</h2>

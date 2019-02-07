@@ -14,9 +14,20 @@ import "./css/App.css";
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {calcText: "0", advanced: false};
+    this.state = {
+      calcText: "0",
+      advanced: false
+    };
 
     this.resolveButtonPress = this.resolveButtonPress.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      calcWidth: window
+        .getComputedStyle(document.getElementById("calculator"))
+        .getPropertyValue("width")
+    });
   }
 
   resolveButtonPress(buttonText) {
@@ -110,8 +121,9 @@ export default class App extends Component {
         <AdvancedPanel
           display={this.state.advanced}
           resolveButtonPress={this.resolveButtonPress}
+          calcWidth={this.state.calcWidth}
         />
-        <div id="calculator">
+        <div ref={"container"} id="calculator">
           <Display calcText={this.state.calcText} />
           <div id="buttonGrid">{buttons}</div>
         </div>

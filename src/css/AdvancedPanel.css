@@ -1,7 +1,7 @@
 #advancedPanel {
   position: absolute;
   top: 191.5px;
-  z-index: -1;
+  z-index: 10;
   width: 20%;
   transition: 0.5s;
   padding: 10px;
