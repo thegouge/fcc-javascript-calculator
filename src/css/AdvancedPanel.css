@@ -1,12 +1,14 @@
 #advancedPanel {
   position: absolute;
   top: 191.5px;
-  z-index: 10;
+  z-index: -1;
   width: 20%;
   transition: 0.5s;
   padding: 10px;
   background: lightgreen;
   text-align: center;
+  border: 5px solid red;
+  box-sizing: border-box;
 }
 
 #advancedPanel h2 {
@@ -17,4 +19,13 @@
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 25% 25% 25% 25%;
+}
+
+@media only screen and (max-width: 1000px) {
+  #advancedPanel {
+    width: 50%;
+    margin-bottom: 30px;
+    top: 45.5%;
+    left: 25%;
+  }
 }
