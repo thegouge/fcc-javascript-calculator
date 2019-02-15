@@ -87,9 +87,15 @@ export default class App extends Component {
   };
 
   cleanText = (text) => {
+    // doesn't let a number start with any zeros
     let cleanText = text.replace(/0{0,}(?=[0-9])/, "");
+
+    // doesn't allow more than one decimal per number
     cleanText = cleanText.replace(/(?<=\.)\.|(?<=\.\d+)\./, "");
+
+    // doesn't allow more than one operation between numbers
     cleanText = cleanText.replace(/[/+\-*](?=[/+\-*])/, "");
+
     return cleanText !== "" ? cleanText : "0";
   };
 

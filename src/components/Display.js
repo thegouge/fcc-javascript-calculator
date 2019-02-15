@@ -14,12 +14,12 @@ export default class Display extends Component {
     let minus = <span>&ndash;</span>;
     minus = minus.props.children;
 
-    prettyText = prettyText.replace(/(?<=\d)-/, minus);
-    const operators = ["+", minus, "*", "/"];
-    operators.forEach((operand) => {
+    ["+", "-", "*", "/"].forEach((operand) => {
       prettyText = prettyText.split(operand).join(` ${operand} `);
     });
+
     prettyText = prettyText.replace("*", "x");
+    prettyText = prettyText.replace("-", minus);
 
     return `${prettyText}`;
   };
