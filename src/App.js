@@ -11,26 +11,20 @@ import regexLastIndexOf from "./assets/regexLastIndexOf";
 
 import "./css/App.css";
 
+const PIE = 3.14159;
+
 export default class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       calcText: "0",
-      advanced: false
+      advanced: false,
+      basicButtons: basicButtons
     };
-
-    this.resolveButtonPress = this.resolveButtonPress.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({
-      calcWidth: window
-        .getComputedStyle(document.getElementById("calculator"))
-        .getPropertyValue("width")
-    });
-  }
-
-  resolveButtonPress(buttonText) {
+  resolveButtonPress = (buttonText, type = "null") => {
     let calcText = this.state.calcText;
     switch (buttonText) {
       case "Adv":
@@ -41,22 +35,38 @@ export default class App extends Component {
         calcText = ``;
         break;
 
-      case "=":
-        /[+\-/*.]$/.test(calcText)
-          ? alert(`not a valid equation!`)
-          : (calcText = `${this.evaluate(calcText)}`);
-        break;
-
       case "()":
         calcText += `${this.checkParenthBalance(calcText)}`;
         break;
 
-      case "+/-":
+      case "swap":
         calcText = `${this.changeLastNumberSign(calcText)}`;
         break;
 
-      case "x":
-        calcText += "*";
+      case "sqrt":
+        calcText = math.sqrt(parseInt(calcText)).toString();
+        break;
+
+      case "exp":
+        break;
+
+      case "pi":
+        //eslint-disable-next-line
+        if (calcText != PIE) calcText += PIE;
+        break;
+
+      case "rev":
+        break;
+
+      case "abs":
+        break;
+
+      case "con":
+        calcText = this.convertTo(type);
+        break;
+
+      case "=":
+        calcText = `${this.evaluate(calcText)}`;
         break;
 
       default:
@@ -64,18 +74,11 @@ export default class App extends Component {
     }
     calcText = this.cleanText(calcText);
     this.setState({calcText: calcText});
-  }
-
-  evaluate = (expression) => {
-    return `${math.eval(expression)}`;
   };
 
   checkParenthBalance = (text) => {
-    if (/\(/.test(text)) {
-      return `)`;
-    } else {
-      return `(`;
-    }
+    if (text === `0`) return "(";
+    return /\(/.test(text) ? `)` : `(`;
   };
 
   toggleAdvPanel = () => {
@@ -98,30 +101,44 @@ export default class App extends Component {
   };
 
   changeLastNumberSign = (text) => {
+    if (text === "0") return text;
+
     const lastOperandIndex = regexLastIndexOf(text, /[+\-*/]/) + 1;
     const lastNumber = parseInt(text.substring(lastOperandIndex));
 
-    console.log(lastOperandIndex);
     return `${text.slice(0, lastOperandIndex)}(${lastNumber * -1})`;
   };
 
+  convertTo = (type) => {
+    return type;
+  };
+
+  evaluate = (expression) => {
+    if (/[+\-/*.]$/.test(expression)) {
+      alert(`not a valid equation!`);
+      return;
+    }
+    return `${math.eval(expression)}`;
+  };
+
   render() {
-    const buttons = basicButtons.map((btn) => {
+    const buttons = this.state.basicButtons.map((btn) => {
       return (
         <Button
           key={btn.desc}
           description={btn.desc}
           text={btn.text}
+          displayText={btn.displayText}
           resolveButtonPress={this.resolveButtonPress}
         />
       );
     });
+
     return (
       <div className="App">
         <AdvancedPanel
           display={this.state.advanced}
           resolveButtonPress={this.resolveButtonPress}
-          calcWidth={this.state.calcWidth}
         />
         <div ref={"container"} id="calculator">
           <Display calcText={this.state.calcText} />

@@ -4,7 +4,7 @@ import "../css/Button.css";
 
 export default class Button extends Component {
   clickSelf = () => {
-    this.props.resolveButtonPress(this.props.text);
+    this.props.resolveButtonPress(this.props.text, this.props.type);
   };
   render() {
     return (
@@ -13,7 +13,7 @@ export default class Button extends Component {
         id={this.props.description}
         onClick={this.clickSelf}
       >
-        {this.props.text}
+        {this.props.displayText}
       </button>
     );
   }
