@@ -15,6 +15,10 @@ export default class Display extends Component {
     minus = minus.props.children;
 
     prettyText = prettyText.replace(/(?<=\d)-/, minus);
+    const operators = ["+", minus, "*", "/"];
+    operators.forEach((operand) => {
+      prettyText = prettyText.split(operand).join(` ${operand} `);
+    });
     prettyText = prettyText.replace("*", "x");
 
     return `${prettyText}`;

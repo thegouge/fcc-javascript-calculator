@@ -11,7 +11,7 @@ import regexLastIndexOf from "./assets/regexLastIndexOf";
 
 import "./css/App.css";
 
-const PIE = 3.14159;
+const PIE = 3.14;
 
 export default class App extends Component {
   constructor(props) {
@@ -51,8 +51,7 @@ export default class App extends Component {
         break;
 
       case "pi":
-        //eslint-disable-next-line
-        if (calcText != PIE) calcText += PIE;
+        if (calcText !== `${PIE}`) calcText += PIE;
         break;
 
       case "rev":
@@ -88,15 +87,9 @@ export default class App extends Component {
   };
 
   cleanText = (text) => {
-    let cleanText = text.replace(/0{2,}/, "");
-    cleanText = cleanText.replace(/0(?=\d)/, "");
+    let cleanText = text.replace(/0{0,}(?=[0-9])/, "");
     cleanText = cleanText.replace(/(?<=\.)\.|(?<=\.\d+)\./, "");
-    const regex = /[+\-*]{2,}/;
-    if (regex.test(cleanText)) {
-      let multiOperation = cleanText.match(regex)[0];
-      let lastOperation = multiOperation[multiOperation.length - 1];
-      cleanText = cleanText.replace(multiOperation, lastOperation);
-    }
+    cleanText = cleanText.replace(/[/+\-*](?=[/+\-*])/, "");
     return cleanText !== "" ? cleanText : "0";
   };
 
