@@ -38,9 +38,9 @@ export const advancedButtons = [
   {text: "!", displayText: "!", desc: "factorial"},
   {text: "rev", displayText: "1/x", desc: "reverse"},
   {text: "abs", displayText: "|x|", desc: "absolute-value"},
-  {text: "h ", displayText: "h", desc: "hours"},
-  {text: "m ", displayText: "m", desc: "minutes"},
-  {text: "s ", displayText: "s", desc: "seconds"},
+  {text: "h", displayText: "h", desc: "hours"},
+  {text: "m", displayText: "m", desc: "minutes"},
+  {text: "s", displayText: "s", desc: "seconds"},
   {
     text: "con",
     type: "H",

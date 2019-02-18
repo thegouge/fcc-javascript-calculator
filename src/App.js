@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 
 import {basicButtons} from "./assets/buttonBank";
 import regexLastIndexOf from "./assets/regexLastIndexOf";
+import {toSeconds, toMinutes, toHours, notate} from "./assets/timeCalc";
 
 import "./css/App.css";
 
@@ -109,15 +110,45 @@ export default class App extends Component {
   };
 
   convertTo = (type) => {
-    return type;
+    console.log(type);
+    const calcText = this.state.calcText;
+    switch (type) {
+      case "H":
+        this.setState({
+          calcText: toHours(calcText)
+        });
+        break;
+
+      case "M":
+        this.setState({
+          calcText: toMinutes(calcText)
+        });
+        break;
+
+      case "S":
+        this.setState({
+          calcText: toSeconds(calcText)
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  calculateTime = (text, matchlist) => {
+    notate(toSeconds(text, matchlist));
   };
 
   evaluate = (expression) => {
-    if (/[+\-/*.]$/.test(expression)) {
+    if (expression.match(/[hms]/g)) {
+      this.calculateTime(expression);
+    } else if (/[+\-/*.]$/.test(expression)) {
       alert(`not a valid equation!`);
       return;
+    } else {
+      return `${math.eval(expression)}`;
     }
-    return `${math.eval(expression)}`;
   };
 
   render() {

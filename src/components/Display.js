@@ -18,6 +18,7 @@ export default class Display extends Component {
       prettyText = prettyText.split(operand).join(` ${operand} `);
     });
 
+    prettyText = prettyText.replace(/([hms])/g, "$1 ");
     prettyText = prettyText.replace("*", "x");
     prettyText = prettyText.replace("-", minus);
 
