@@ -49,6 +49,7 @@ export default class App extends Component {
         break;
 
       case "exp":
+        calcText = this.addExponent(calcText);
         break;
 
       case "pi":
@@ -56,9 +57,11 @@ export default class App extends Component {
         break;
 
       case "rev":
+        calcText = this.reverseLastNumber(calcText);
         break;
 
       case "abs":
+        calcText = `|${calcText}|`;
         break;
 
       case "con":
@@ -100,13 +103,29 @@ export default class App extends Component {
     return cleanText !== "" ? cleanText : "0";
   };
 
+  getLastNumber = (text) => {
+    const lastOperandIndex = regexLastIndexOf(text, /[+\-*/]/) + 1;
+    return parseInt(text.substring(lastOperandIndex));
+  };
+
   changeLastNumberSign = (text) => {
     if (text === "0") return text;
+    const lastNumber = this.getLastNumber(text);
 
-    const lastOperandIndex = regexLastIndexOf(text, /[+\-*/]/) + 1;
-    const lastNumber = parseInt(text.substring(lastOperandIndex));
+    return `${text.slice(0, text.lastIndexOf(lastNumber))}(${lastNumber * -1})`;
+  };
 
-    return `${text.slice(0, lastOperandIndex)}(${lastNumber * -1})`;
+  reverseLastNumber = (text) => {
+    if (text === "0") return text;
+    const lastNumber = this.getLastNumber(text);
+
+    return `${text.slice(0, text.lastIndexOf(lastNumber))}(1/${lastNumber})`;
+  };
+
+  addExponent = (text) => {
+    const lastNumber = this.getLastNumber(text);
+
+    return `${text.slice(0, text.lastIndexOf(lastNumber))}(${lastNumber})^(`;
   };
 
   convertTo = (calcText, type) => {
@@ -142,6 +161,12 @@ export default class App extends Component {
     if (/[hms]/.test(expression)) {
       const resolvedToSeconds = this.calculateTime(expression);
       return notate(resolvedToSeconds);
+    } else if (/\|/.test(expression)) {
+      const expressionToBeAbs = expression.replace(/(\|)(.{0,})\1/, "$2");
+      let evaluatedExpression = math.eval(expressionToBeAbs);
+      return evaluatedExpression < 0
+        ? evaluatedExpression * -1
+        : evaluatedExpression;
     } else if (/[+\-/*.]$/.test(expression)) {
       alert(`not a valid equation!`);
       return;
