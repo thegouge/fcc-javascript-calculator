@@ -41,7 +41,7 @@ export default class App extends Component {
         break;
 
       case "swap":
-        calcText = `${this.changeLastNumberSign(calcText)}`;
+        calcText = this.lastNumberOperation(calcText, "swap");
         break;
 
       case "sqrt":
@@ -49,7 +49,7 @@ export default class App extends Component {
         break;
 
       case "exp":
-        calcText = this.addExponent(calcText);
+        calcText = this.lastNumberOperation(calcText, "exp");
         break;
 
       case "pi":
@@ -57,7 +57,7 @@ export default class App extends Component {
         break;
 
       case "rev":
-        calcText = this.reverseLastNumber(calcText);
+        calcText = this.lastNumberOperation(calcText, "rev");
         break;
 
       case "abs":
@@ -103,29 +103,31 @@ export default class App extends Component {
     return cleanText !== "" ? cleanText : "0";
   };
 
-  getLastNumber = (text) => {
+  lastNumberOperation = (text, type) => {
+    if (text === "0") return text;
+
     const lastOperandIndex = regexLastIndexOf(text, /[+\-*/]/) + 1;
-    return parseInt(text.substring(lastOperandIndex));
-  };
+    const lastNumber = parseInt(text.substring(lastOperandIndex));
+    let endString;
 
-  changeLastNumberSign = (text) => {
-    if (text === "0") return text;
-    const lastNumber = this.getLastNumber(text);
+    switch (type) {
+      case "swap":
+        endString = `(${lastNumber * -1})`;
+        break;
 
-    return `${text.slice(0, text.lastIndexOf(lastNumber))}(${lastNumber * -1})`;
-  };
+      case "exp":
+        endString = `(${lastNumber})^(`;
+        break;
 
-  reverseLastNumber = (text) => {
-    if (text === "0") return text;
-    const lastNumber = this.getLastNumber(text);
+      case "rev":
+        endString = `(1/${lastNumber})`;
+        break;
 
-    return `${text.slice(0, text.lastIndexOf(lastNumber))}(1/${lastNumber})`;
-  };
+      default:
+        break;
+    }
 
-  addExponent = (text) => {
-    const lastNumber = this.getLastNumber(text);
-
-    return `${text.slice(0, text.lastIndexOf(lastNumber))}(${lastNumber})^(`;
+    return `${text.slice(0, text.lastIndexOf(lastNumber))}${endString}`;
   };
 
   convertTo = (calcText, type) => {
