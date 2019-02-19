@@ -1,44 +1,48 @@
 export function toSeconds(inputString) {
-  let hours, minutes, seconds;
-  const letterMatch = inputString.match(/[hms]/g);
-  const newString = inputString.split(/[hms]/g);
-  newString.splice(-1, 1);
+  const letterMatch = inputString.match(/\d{1,}[hms]/g);
 
-  for (var i = 0; i < letterMatch.length; i++) {
-    if (letterMatch[i] === "h") {
-      hours = newString[i];
-    } else if (letterMatch[i] === "m") {
-      minutes = newString[i];
-    } else if (letterMatch[i] === "s") {
-      seconds = newString[i];
-    }
-  }
+  const seconds = letterMatch
+    .map((timePartial) => {
+      const partialEnd = timePartial.length - 1;
+      const number = parseInt(timePartial.substring(0, partialEnd));
+      switch (timePartial[partialEnd]) {
+        case "h":
+          return number * 3600;
 
-  minutes = parseInt(minutes) + hours * 60;
-  seconds = parseInt(seconds) + minutes * 60;
+        case "m":
+          return number * 60;
 
-  return `${seconds}`;
+        case "s":
+          return number;
+
+        default:
+          return 0;
+      }
+    })
+    .reduce((acc, curr) => acc + curr, 0);
+
+  return seconds;
 }
 
-export function toMinutes(inputString) {
-  return `inputString`;
+export function toMinutes(seconds) {
+  return `${seconds / 60}m`;
 }
 
-export function toHours(inputString) {
-  return `inputString`;
+export function toHours(seconds) {
+  return `${seconds / 3600}h`;
 }
 
-export function notate(inputString) {
-  let seconds = toSeconds(inputString);
+export function notate(inputSeconds) {
+  let seconds = inputSeconds;
   let hours = 0;
   let minutes = 0;
 
-  while (seconds > 60) {
+  while (seconds >= 60) {
     seconds -= 60;
     minutes++;
   }
 
-  while (minutes > 60) {
+  while (minutes >= 60) {
     minutes -= 60;
     hours++;
   }

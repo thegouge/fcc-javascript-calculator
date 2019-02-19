@@ -62,7 +62,7 @@ export default class App extends Component {
         break;
 
       case "con":
-        calcText = this.convertTo(type);
+        calcText = this.convertTo(calcText, type);
         break;
 
       case "=":
@@ -109,40 +109,39 @@ export default class App extends Component {
     return `${text.slice(0, lastOperandIndex)}(${lastNumber * -1})`;
   };
 
-  convertTo = (type) => {
-    console.log(type);
-    const calcText = this.state.calcText;
+  convertTo = (calcText, type) => {
+    const seconds = this.calculateTime;
+
     switch (type) {
       case "H":
-        this.setState({
-          calcText: toHours(calcText)
-        });
-        break;
+        return toHours(seconds);
 
       case "M":
-        this.setState({
-          calcText: toMinutes(calcText)
-        });
-        break;
+        return toMinutes(seconds);
 
       case "S":
-        this.setState({
-          calcText: toSeconds(calcText)
-        });
-        break;
+        return seconds + "s";
 
       default:
         break;
     }
   };
 
-  calculateTime = (text, matchlist) => {
-    notate(toSeconds(text, matchlist));
+  calculateTime = (text) => {
+    if (!/[hms]/.test(text)) {
+      alert("Invalid Input!");
+      return;
+    }
+    return text
+      .split(/[/+*-]/)
+      .map((time) => toSeconds(time))
+      .reduce((tot, curr) => tot + curr, 0);
   };
 
   evaluate = (expression) => {
-    if (expression.match(/[hms]/g)) {
-      this.calculateTime(expression);
+    if (/[hms]/.test(expression)) {
+      const resolvedToSeconds = this.calculateTime(expression);
+      return notate(resolvedToSeconds);
     } else if (/[+\-/*.]$/.test(expression)) {
       alert(`not a valid equation!`);
       return;
