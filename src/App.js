@@ -110,7 +110,7 @@ export default class App extends Component {
   };
 
   convertTo = (calcText, type) => {
-    const seconds = this.calculateTime;
+    const seconds = this.calculateTime(calcText);
 
     switch (type) {
       case "H":
