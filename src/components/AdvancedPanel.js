@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import Button from "./Button";
 
-import {advancedButtons} from "../assets/buttonBank";
+import {advancedButtons} from "../logicAssets/buttonBank";
 
 import "../css/AdvancedPanel.css";
 

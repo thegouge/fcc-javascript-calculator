@@ -6,9 +6,9 @@ import Button from "./components/Button";
 import Display from "./components/Display";
 import Footer from "./components/Footer";
 
-import {basicButtons} from "./assets/buttonBank";
-import regexLastIndexOf from "./assets/regexLastIndexOf";
-import {toSeconds, toMinutes, toHours, notate} from "./assets/timeCalc";
+import {basicButtons} from "./logicAssets/buttonBank";
+import regexLastIndexOf from "./logicAssets/regexLastIndexOf";
+import {toSeconds, toMinutes, toHours, notate} from "./logicAssets/timeCalc";
 
 import "./css/App.css";
 
