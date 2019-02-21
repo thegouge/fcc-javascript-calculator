@@ -162,10 +162,12 @@ export default class App extends Component {
   evaluate = (expression) => {
     if (/[hms]/.test(expression)) {
       const resolvedToSeconds = this.calculateTime(expression);
+
       return notate(resolvedToSeconds);
     } else if (/\|/.test(expression)) {
       const expressionToBeAbs = expression.replace(/(\|)(.{0,})\1/, "$2");
       let evaluatedExpression = math.eval(expressionToBeAbs);
+
       return evaluatedExpression < 0
         ? evaluatedExpression * -1
         : evaluatedExpression;
