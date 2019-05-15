@@ -8,7 +8,12 @@ import Footer from "./components/Footer";
 
 import {basicButtons} from "./logicAssets/buttonBank";
 import regexLastIndexOf from "./logicAssets/regexLastIndexOf";
-import {toSeconds, toMinutes, toHours, notate} from "./logicAssets/timeCalc";
+import {
+  evaluateTimeExpression,
+  resolveToHours,
+  resolveToMinutes,
+  resolveToSeconds,
+} from "time-shenanigans";
 
 import "./css/App.css";
 
@@ -21,7 +26,7 @@ export default class App extends Component {
     this.state = {
       calcText: "0",
       advanced: false,
-      basicButtons: basicButtons
+      basicButtons: basicButtons,
     };
   }
 
@@ -86,7 +91,7 @@ export default class App extends Component {
 
   toggleAdvPanel = () => {
     this.setState({
-      advanced: !this.state.advanced
+      advanced: !this.state.advanced,
     });
   };
 
@@ -131,52 +136,23 @@ export default class App extends Component {
   };
 
   convertTo = (calcText, type) => {
-    const seconds = this.calculateTime(calcText);
-
     switch (type) {
       case "H":
-        return toHours(seconds);
+        return resolveToHours(calcText);
 
       case "M":
-        return toMinutes(seconds);
+        return resolveToMinutes(calcText);
 
       case "S":
-        return seconds + "s";
+        return resolveToSeconds(calcText);
 
       default:
         break;
     }
   };
 
-  calculateTime = (text) => {
-    if (!/[hms]/.test(text)) {
-      alert("Invalid Input!");
-      return;
-    }
-    return text
-      .split(/[/+*-]/)
-      .map((time) => toSeconds(time))
-      .reduce((tot, curr) => tot + curr, 0);
-  };
-
   evaluate = (expression) => {
-    if (/[hms]/.test(expression)) {
-      const resolvedToSeconds = this.calculateTime(expression);
-
-      return notate(resolvedToSeconds);
-    } else if (/\|/.test(expression)) {
-      const expressionToBeAbs = expression.replace(/(\|)(.{0,})\1/, "$2");
-      let evaluatedExpression = math.eval(expressionToBeAbs);
-
-      return evaluatedExpression < 0
-        ? evaluatedExpression * -1
-        : evaluatedExpression;
-    } else if (/[+\-/*.]$/.test(expression)) {
-      alert(`not a valid equation!`);
-      return;
-    } else {
-      return `${math.eval(expression)}`;
-    }
+    return evaluateTimeExpression(expression);
   };
 
   render() {
